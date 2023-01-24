@@ -71,17 +71,22 @@ class War {
         this.saxonArmy.push(saxon)
     }
 
-    vikingAttack(){
+    armyAttacker(attacker, defender){
         let r = ''
-        this.saxonArmy.map(e => r = e.receiveDamage(this.vikingArmy[0].attack()))
-        this.saxonArmy = this.saxonArmy.filter(element => element.health > 0)
+        defender.map(e => r = e.receiveDamage(attacker[0].attack()))
+        defender = defender.filter(element => element.health > 0)
+        return [r, defender]
+    }
+
+    vikingAttack(){
+        let r = '';
+        [r , this.saxonArmy] = this.armyAttacker(this.vikingArmy, this.saxonArmy);
         return r
     }
 
     saxonAttack(){
-        let r = ''
-        this.vikingArmy.map(e => {return r = e.receiveDamage(this.saxonArmy[0].attack())})
-        this.vikingArmy = this.vikingArmy.filter(element => element.health > 0)
+        let r = '';
+        [r , this.vikingArmy] = this.armyAttacker(this.saxonArmy, this.vikingArmy);
         return r
     }
 
@@ -93,7 +98,6 @@ class War {
             return 'Saxons have fought for their lives and survived another day...'
         }
         else{
-            console.log(this.vikingArmy, 'viking')
             return "Vikings and Saxons are still in the thick of battle."
         }
     }
