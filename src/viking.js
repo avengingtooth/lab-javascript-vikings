@@ -71,24 +71,38 @@ class War {
         this.saxonArmy.push(saxon)
     }
 
-    armyAttacker(attacker, defender){
-        let r = ''
-        defender.map(e => r = e.receiveDamage(attacker[0].attack()))
-        defender = defender.filter(element => element.health > 0)
-        return [r, defender]
+    armyAttacker(attackerArmy, defenderArmy){
+        let attacker = attackerArmy[Math.floor(Math.random()*attackerArmy.length)]
+        let defenderInd = Math.floor(Math.random()*defenderArmy.length)
+        let defender = defenderArmy[defenderInd]
+        let r = defender.receiveDamage(attacker.attack())
+        if (defender.health <= 0){
+            defenderArmy.splice(defenderInd)
+        }
+        return r
     }
 
     vikingAttack(){
-        let r = '';
-        [r , this.saxonArmy] = this.armyAttacker(this.vikingArmy, this.saxonArmy);
-        return r
+        return this.armyAttacker(this.vikingArmy, this.saxonArmy);
     }
 
     saxonAttack(){
-        let r = '';
-        [r , this.vikingArmy] = this.armyAttacker(this.saxonArmy, this.vikingArmy);
-        return r
+        return this.armyAttacker(this.saxonArmy, this.vikingArmy);
     }
+
+    // vikingAttack(){
+    //     let r = ''
+    //     this.saxonArmy.map(e => r = e.receiveDamage(this.vikingArmy[0].attack()))
+    //     this.saxonArmy = this.saxonArmy.filter(element => element.health > 0)
+    //     return r
+    // }
+
+    // saxonAttack(){
+    //     let r = ''
+    //     this.vikingArmy.map(e => {return r = e.receiveDamage(this.saxonArmy[0].attack())})
+    //     this.vikingArmy = this.vikingArmy.filter(element => element.health > 0)
+    //     return r
+    // }
 
     showStatus(){
         if (!this.saxonArmy.length){
